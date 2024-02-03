@@ -8,9 +8,7 @@ function App() {
 
   const [count, setCount] = useState(0);
   const [start, setStart] = useState(false);
-  const socket = socketIOClient.connect(ENDPOINT,{
-    withCredentials: true
-  });
+  const socket = socketIOClient.connect(ENDPOINT);
 
 
   socket.on("start", data => {

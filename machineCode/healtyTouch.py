@@ -5,7 +5,6 @@ import time
  
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
-GPIO.setmode(GPIO.BCM)
 
  
 #set GPIO Pins

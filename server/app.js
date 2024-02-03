@@ -63,8 +63,7 @@ var server = http.createServer(app);
 
 const io = socketIo(server).listen(server, {
 cors: {
-  origin: "http://localhost:3000",
-  credentials: true
+  origin: "*",
 }});
 
 app.set('socketio', io);
