@@ -9,6 +9,17 @@
   align-items: center;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -34,7 +45,34 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.carosels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.QRcontainer{
+  position: absolute;
+  display: flex;
+  bottom: 5px;
+  right: 5px;
+  width: 30vw;
+  background-color: #fffa;
+  padding: 20px;
+  border-radius: 8px;
+  align-items: center;
+}
+
+.QRcontainer img{
+  object-fit: contain;
+  height: 10vh;
 }
