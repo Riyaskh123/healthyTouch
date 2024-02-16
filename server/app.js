@@ -2,7 +2,7 @@
 var debug = require('debug')('server:server');
 var http = require('http');
 const socketIo = require("socket.io");
-
+const connectDB = require( "./config/connection.js");
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -10,8 +10,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 
+var machineRouter = require('./routes/machine');
 var indexRouter = require('./routes/index');
-
 var app = express();
 
 // view engine setup
@@ -23,9 +23,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-app.use('/machine', indexRouter);
+app.use('/machine', machineRouter);
 
-
+app.use('/api',indexRouter)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -44,7 +44,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-
+connectDB();
 // server ON
 
 
