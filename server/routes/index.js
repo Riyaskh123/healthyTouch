@@ -1,34 +1,27 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
+var {
+  createAds,
+  getAllAds,
+  updateAd,
+  deleteAd,
+} = require("../controller/adsController.js");
 
-// const io = require('../app')
+var {
+ createAdmin, adminAuth
+} = require("../controller/adminController.js");
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+var {
+  createUser
+ } = require("../controller/userController.js");
+
+router.get("/", function (req, res, next) {
+  res.render("index", { title: "Express" });
 });
 
-router.get('/start',function(req, res, next) {
-  // console.log(req.params.count);
-  const io = req.app.get('socketio');
-  io.emit('start')
-  res.json({msg:'success'})
-})
-
-router.get('/count/:count', function(req, res, next) {
-  // console.log(req.params.count);
-  const io = req.app.get('socketio');
-  io.emit('count',req.params.count)
-  res.json({msg:'success'})
-});
-
-
-router.get('/timeout', function(req, res, next) {
-  // console.log(req.params.count);
-  const io = req.app.get('socketio');
-  io.emit('timeout')
-  res.json({msg:'success'})
-});
-
-
+//ad section
+router.route("/ads").post(createAds).get(getAllAds).patch(updateAd).delete(deleteAd);
+router.route("/admin").post(createAdmin)
+router.route("/adminLogin").post(adminAuth)
+router.route("/user").post(createUser)
 module.exports = router;
