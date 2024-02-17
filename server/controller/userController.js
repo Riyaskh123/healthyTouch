@@ -89,21 +89,31 @@ const createUser = AsyncHandler(async (req, res) => {
 
 const updateUser = AsyncHandler(async (req, res) => {
   try {
-    if (!req.body.Id || !req.body.count) {
-      return res.status(400).json({ message: "Invalid data value" });
-    }
-    
+    console.log(req.body)
+    // if (!req.body.Id || !req.body.count) {
+    //   return res.status(400).json({ message: "Invalid data value" });
+    // }
+    console.log("--------------------------------------------------------------------------------------------------------------")
+    ;
    let offers = await Offer.find({$and:[{upperLimit:{$gt:req.body.count}},{lowerLimit:{$lt:req.body.count}}]}) 
 
    var randomItem = offers[Math.floor(Math.random()*offers.length)];
-   req.body.offer = randomItem._id;
+if(randomItem){
+  req.body.offer = randomItem._id
+}
     const updatedUser = await User.findByIdAndUpdate(req.body.Id, req.body);
-
+     
+    isUserLoggedIn = false;
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
-    isUserLoggedIn = false;
-    res.json(updatedUser);
+    if(!randomItem){
+      return res.status(404).json({ message: "You dont have offer now" });
+    }else{
+      let userWithOffer = await User.findById(updatedUser._id).populate("offer")
+
+      res.json(userWithOffer);
+    }
     
   } catch (err) {
     console.error(err);

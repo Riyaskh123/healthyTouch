@@ -13,7 +13,7 @@ const tableHeader = [
 export default function Content({ data, updateData }) {
   const [formOpen, setFormOpen] = useState(false)
   const [selectedData,setselectedData] = useState()
-  const tableData = tableHeaderReplace(data,["name","image"],tableHeader)
+  const tableData = tableHeaderReplace(data,["adName","imageURL"],tableHeader)
 
   const actionHandle = (e)=>{
     console.log(e);
