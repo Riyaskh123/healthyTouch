@@ -9,6 +9,14 @@ const offerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    lowerLimit:{
+        type: Number,
+        required: true,
+    },
+    upperLimit:{
+        type: Number,
+        required: true,
+    },
     status:{
         type: String,
         enum: ["Active", "Inactive"],
@@ -16,7 +24,7 @@ const offerSchema = new mongoose.Schema({
     },
 });
 
-const Offers = mongoose.model('Offer', offerSchema); // Assign the model directly to a variable
+const Offer = mongoose.model('Offer', offerSchema); // Assign the model directly to a variable
 
-module.exports = Offers; // Export the model directly
+module.exports = Offer; // Export the model directly
 

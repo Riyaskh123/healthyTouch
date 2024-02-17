@@ -24,10 +24,8 @@ router.get('/count/:count', function(req, res, next) {
 
 
 router.get('/timeout', function(req, res, next) {
-  // console.log(req.params.count);
   const io = req.app.get('socketio');
 
-  //count and id...
   
   io.emit('timeout')
   res.json({msg:'success'})
