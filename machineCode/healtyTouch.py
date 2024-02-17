@@ -65,15 +65,13 @@ if __name__ == '__main__':
 					time.sleep(0.05)
 				srTime = time.time()
 			spTime = time.time()
-			if count > 0 :
-				diff = spTime - srTime
-				if diff > timeoutDiff :
-					print('your Times up Thank you ')
-					res = requests.get(BASE_URL +'timeout')
-					time.sleep(0.05)
-					res.json()
-					
-					count = 0 
+			diff = spTime - srTime
+			if diff > timeoutDiff :
+				print('your Times up Thank you ')
+				res = requests.get(BASE_URL +'timeout')
+				time.sleep(0.05)
+				res.json()
+				count = 0 
         # Reset by pressing CTRL + C
 	except KeyboardInterrupt:
 		print("Measurement stopped by User")
