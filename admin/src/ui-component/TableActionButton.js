@@ -3,7 +3,6 @@ import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Delete, MoreVert, Preview, Settings } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
@@ -48,7 +47,7 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-export default function TableActionButton({data, actions = ['Edit', 'Delete'], onActionChange }) {
+export default function TableActionButton({ data, actions = ['Edit', 'Delete'], onActionChange }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -56,20 +55,14 @@ export default function TableActionButton({data, actions = ['Edit', 'Delete'], o
     };
     const handleClose = (action) => {
         setAnchorEl(null);
-        onActionChange && onActionChange({action,data})
+        onActionChange && onActionChange({ action, data })
     };
 
     return (
         <div>
             <IconButton
-                id="demo-customized-button"
-                aria-controls={open ? 'demo-customized-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
                 variant="contained"
-                disableElevation
                 onClick={handleClick}
-                endIcon={<KeyboardArrowDownIcon />}
             >
                 <MoreVert />
             </IconButton>
@@ -86,28 +79,28 @@ export default function TableActionButton({data, actions = ['Edit', 'Delete'], o
                     actions.map((item, ind) => {
                         if (item.toUpperCase() == "EDIT") {
                             return (
-                                <MenuItem key={ind} onClick={()=>handleClose(item)} disableRipple>
+                                <MenuItem key={ind} onClick={() => handleClose(item)}>
                                     <EditIcon />
                                     Edit
                                 </MenuItem>
                             )
                         } else if (item.toUpperCase() == "DELETE") {
                             return (
-                                <MenuItem key={ind} onClick={()=>handleClose(item)} disableRipple>
+                                <MenuItem key={ind} onClick={() => handleClose(item)}>
                                     <Delete />
-                                    Edit
+                                    Delete
                                 </MenuItem>
                             )
                         } else if (item.toUpperCase() == "VIEW") {
                             return (
-                                <MenuItem key={ind} onClick={()=>handleClose(item)} disableRipple>
+                                <MenuItem key={ind} onClick={() => handleClose(item)}>
                                     <Preview />
                                     View
                                 </MenuItem>
                             )
                         } else {
                             return (
-                                <MenuItem key={ind} onClick={()=>handleClose(item)} disableRipple>
+                                <MenuItem key={ind} onClick={() => handleClose(item)} >
                                     <Settings />
                                     {item}
                                 </MenuItem>

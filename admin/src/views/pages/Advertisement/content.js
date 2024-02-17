@@ -1,35 +1,36 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import React from 'react'
-import TableActionButton from 'ui-component/TableActionButton';
-import MainCard from 'ui-component/cards/MainCard';
+import StyledTable from 'ui-component/StyledTable';
+import { tableHeaderReplace } from 'utils/tableHeaderReplace';
+import AdsForm from './AdsForm';
+import { useState } from 'react';
 
-export default function Content({onActionChange}) {
-    
+
+const tableHeader = [
+  "Ads Name",
+  "Image"
+]
+
+export default function Content({ data, updateData }) {
+  const [formOpen, setFormOpen] = useState(false)
+  const [selectedData,setselectedData] = useState()
+  const tableData = tableHeaderReplace(data,["name","image"],tableHeader)
+
+  const actionHandle = (e)=>{
+    console.log(e);
+    if (e.action == "Edit") {
+      setselectedData(e.data)
+      setFormOpen(true)
+    }if (e.action == "Delete") {
+      setselectedData(e.data)
+    }else{
+      setselectedData()
+    }
+    updateData()
+  }
+
   return (
-    <MainCard>
-      <Table sx={{ overflow: 'scroll' }}>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ color: 'primary.main' }}>SLNO</TableCell>
-            <TableCell sx={{ color: 'primary.main' }}>Ads Name</TableCell>
-            <TableCell sx={{ color: 'primary.main' }}>Image</TableCell>
-            <TableCell sx={{ color: 'primary.main' }}>Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell>SLNO</TableCell>
-            <TableCell>Ads Name</TableCell>
-            <TableCell><img
-              style={{ height: '100px' }}
-              src={`https://img.freepik.com/free-vector/juice-ad-with-gradients-lettering_52683-30650.jpg?w=1380&t=st=1708108102~exp=1708108702~hmac=fa36db9c2ec87db08e9514bf29e03d78152a88969a36971471759a32c1c25e86`} alt='Ads' />
-            </TableCell>
-            <TableCell>
-              <TableActionButton onActionChange={(e) => { onActionChange(e) }} actions={["Activate","Edit","Delete"]} />
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </MainCard>
+    <><AdsForm open={formOpen} onClose={() => { setFormOpen(false); } } data={selectedData} isEdit={true} />
+    <StyledTable data={tableData} header={tableHeader} isShowSerialNo={true} isShowAction={true} actions={["Active", "Edit", "delete"]} onActionChange={actionHandle} />
+    </>
   )
 }

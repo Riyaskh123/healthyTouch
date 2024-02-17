@@ -1,18 +1,20 @@
-import { Button, Container, Dialog, DialogTitle, Stack, TextField, Typography } from '@mui/material'
+import { Button, Container, Stack, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useForm, Controller } from "react-hook-form";
 import { MuiFileInput } from 'mui-file-input'
-import { AttachFile, Close } from '@mui/icons-material';
+import { AttachFile } from '@mui/icons-material';
 import { toast } from 'react-toastify';
+import StyledDialog from 'ui-component/StyledDialog';
 
-export default function AdsForm({ open, onClose,isEdit=false,data }) {
-    const [file, selectFile] = useState(isEdit && data.image)
+export default function AdsForm({ open, onClose, isEdit = false, data={} }) {
+    const [file, selectFile] = useState(isEdit && data["Image"])
+    console.log(isEdit && data["Image"]);
     const {
         control,
         handleSubmit,
         formState: { errors },
     } = useForm({
-        defaultValues:isEdit ? data.name : ''
+        defaultValues: isEdit ? data["Ads Name"] : ''
     })
 
     const onSubmit = (data) => {
@@ -22,18 +24,14 @@ export default function AdsForm({ open, onClose,isEdit=false,data }) {
         }
         console.log(data);
     }
+    
     return (
-        <Dialog maxWidth={'sm'} fullWidth open={open}>
-            <DialogTitle>
-                <Stack direction={'row'} sx={{justifyContent:'space-between',alignItems:'center'}}>
-                    <Typography variant='h2' color={'primary.main'}>Add Advertisement</Typography>
-                    <Close sx={{cursor:'pointer'}} onClick={onClose}/>
-                </Stack>
-            </DialogTitle>
+        
+        <StyledDialog open={open} onClose={onClose} title={`${isEdit ? "Edit" : "Add"} Advertisement`}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Container>
                     <Stack direction={'column'} sx={{ p: 2 }} spacing={1}>
-                        <Typography variant='h5'>Select Image of Advertrisement</Typography>
+                        <Typography variant='h5'>Select Image for Advertisement</Typography>
                         <MuiFileInput
                             value={file}
                             onChange={(e) => { selectFile(e) }}
@@ -52,7 +50,7 @@ export default function AdsForm({ open, onClose,isEdit=false,data }) {
                             control={control}
                             render={({ field }) => (
                                 <>
-                                    <TextField {...field} placeholder="Enter Location Name" />
+                                    <TextField {...field} placeholder="Enter Advertisement Name" />
                                     {errors.AdsName && (
                                         <span style={{ color: '#f00' }}>
                                             {errors.AdsName.message}
@@ -60,12 +58,12 @@ export default function AdsForm({ open, onClose,isEdit=false,data }) {
                                     )}
                                 </>
                             )}
-                            rules={{ required: "Location Name is required" }}
+                            rules={{ required: "Ads Name is required" }}
                         />
                         <Button variant='contained' type='submit' sx={{ width: '150px' }}>Add</Button>
                     </Stack>
                 </Container>
             </form>
-        </Dialog>
+        </StyledDialog>
     )
 }
