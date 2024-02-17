@@ -1,9 +1,11 @@
 // assets
-import { IconKey } from '@tabler/icons';
+import {IconAd2,IconNote,IconDiscount2 } from '@tabler/icons';
 
 // constant
 const icons = {
-  IconKey
+  IconNote,
+  IconAd2,
+  IconDiscount2
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -11,31 +13,28 @@ const icons = {
 const pages = {
   id: 'pages',
   title: 'Pages',
-  caption: 'Pages Caption',
   type: 'group',
   children: [
     {
-      id: 'authentication',
-      title: 'Authentication',
-      type: 'collapse',
-      icon: icons.IconKey,
-
-      children: [
-        {
-          id: 'login3',
-          title: 'Login',
-          type: 'item',
-          url: '/pages/login/login3',
-          target: true
-        },
-        {
-          id: 'register3',
-          title: 'Register',
-          type: 'item',
-          url: '/pages/register/register3',
-          target: true
-        }
-      ]
+      id: 'advertisement',
+      title: 'Advertisements',
+      type: 'item',
+      url: '/advertisement',
+      icon: icons.IconAd2,
+    },
+    {
+      id: 'log',
+      title: 'Log',
+      type: 'item',
+      url: '/logs',
+      icon: icons.IconNote,
+    },
+    {
+      id: 'offer',
+      title: 'Offers',
+      type: 'item',
+      url: '/offers',
+      icon: icons.IconDiscount2,
     }
   ]
 };

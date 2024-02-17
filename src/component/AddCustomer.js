@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { machineStart } from '../Service'
+import { addUser, machineStart } from '../Service'
+import { toast } from 'react-toastify'
 
 export default function AddCustomer() {
   const [errorMsg,setErrorMsg] = useState()
@@ -16,16 +17,20 @@ export default function AddCustomer() {
       setErrorMsg("Enter Valid Mobile")
       return false
     }
-
-    console.log("Form Submitted");
-    machineStart().then((res)=>{
+    addUser({
+        "name":name,
+        "email":email,
+        "phone":mobile
+    }).then((res)=>{
       console.log(res);
+      toast.success("Success you can test your power!")
+    }).catch((error)=>{
+      toast.error(error.response.data.message)
+      console.log(error.response.data.message);
     })
   }
 
 const mobileChangeHandle = (e)=>{
-  console.log(e.target.value);
-  
   if (e.target.value.length > 10 || e.target.value.length < 10  ) {
     setErrorMsg("Enter Valid Mobile")
   }else{

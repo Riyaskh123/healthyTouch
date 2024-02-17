@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+
 
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
@@ -11,18 +11,23 @@ import themes from 'themes';
 
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // ==============================|| APP ||============================== //
 
 const App = () => {
-  const customization = useSelector((state) => state.customization);
 
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={themes(customization)}>
+      <ThemeProvider theme={themes()}>
         <CssBaseline />
         <NavigationScroll>
           <Routes />
+          <ToastContainer
+            autoClose={2000}
+            position='top-right'
+          />
         </NavigationScroll>
       </ThemeProvider>
     </StyledEngineProvider>

@@ -8,7 +8,9 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 
-const ENDPOINT = "http://127.0.0.1:3005/";
+// const ENDPOINT = "http://127.0.0.1:3005/";
+const ENDPOINT = "http://192.168.1.17:3005/";
+
 const settings = {
     showArrows: false,
     interval: 5000,
@@ -28,10 +30,13 @@ export default function Index() {
     const [count, setCount] = useState(0);
     const [start, setStart] = useState(false);
     const [confelli, setConfelli] = useState(false);
+    const [userData,setUserData] = useState();
     const socket = socketIOClient.connect(ENDPOINT);
     const { width, height } = useWindowSize();
 
     socket.on("start", data => {
+        console.log(data);
+        setUserData(data)
         setStart(true);
     });
 
@@ -75,7 +80,7 @@ export default function Index() {
                 </div>
             </div> :
             <div className="App">
-                <Confetti width={width} height={height} recycle={confelli} />
+                {/* <Confetti width={width} height={height} recycle={confelli} /> */}
                 <h1>{count}</h1>
                 <h2>{start ? 'Start pull up' : 'Thank you visit again'}</h2>
             </div>
