@@ -7,7 +7,6 @@ var Offer = require("../common/offerSchema.js");
 
 let isUserLoggedIn = false;
 
-
 const createUser = AsyncHandler(async (req, res) => {
   const { name, phone, email } = req.body;
   try {
@@ -50,8 +49,8 @@ const createUser = AsyncHandler(async (req, res) => {
       },
     ])
       .then((results) => {
-        console.log(results.length)
-        console.log(results)
+        console.log(results.length);
+        console.log(results);
         if (results.length >= 2) {
           // Check if last updated date is today
 
@@ -70,7 +69,7 @@ const createUser = AsyncHandler(async (req, res) => {
             console.log("user Saved successfully:", newUser);
 
             const io = req.app.get("socketio");
-            io.emit("start",newUser);
+            io.emit("start", newUser);
 
             res.status(201).json({
               newUser,
@@ -89,32 +88,39 @@ const createUser = AsyncHandler(async (req, res) => {
 
 const updateUser = AsyncHandler(async (req, res) => {
   try {
-    console.log(req.body)
+    console.log(req.body);
     // if (!req.body.Id || !req.body.count) {
     //   return res.status(400).json({ message: "Invalid data value" });
     // }
-    console.log("--------------------------------------------------------------------------------------------------------------")
-    ;
-   let offers = await Offer.find({$and:[{upperLimit:{$gt:req.body.count}},{lowerLimit:{$lt:req.body.count}}]}) 
+    console.log(
+      "--------------------------------------------------------------------------------------------------------------"
+    );
+    let offers = await Offer.find({
+      $and: [
+        { upperLimit: { $gt: req.body.count } },
+        { lowerLimit: { $lt: req.body.count } },
+      ],
+    });
 
-   var randomItem = offers[Math.floor(Math.random()*offers.length)];
-if(randomItem){
-  req.body.offer = randomItem._id
-}
+    var randomItem = offers[Math.floor(Math.random() * offers.length)];
+    if (randomItem) {
+      req.body.offer = randomItem._id;
+    }
     const updatedUser = await User.findByIdAndUpdate(req.body.Id, req.body);
-     
+
     isUserLoggedIn = false;
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
-    if(!randomItem){
+    if (!randomItem) {
       return res.status(404).json({ message: "You dont have offer now" });
-    }else{
-      let userWithOffer = await User.findById(updatedUser._id).populate("offer")
+    } else {
+      let userWithOffer = await User.findById(updatedUser._id).populate(
+        "offer"
+      );
 
       res.json(userWithOffer);
     }
-    
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
@@ -122,34 +128,42 @@ if(randomItem){
 });
 
 const getUserLoginStatus = (req, res) => {
-
-  try{
-    return res.status(200).json({isUserLoggedIn});
-
-  }
-  catch (err) {
+  try {
+    return res.status(200).json({ isUserLoggedIn });
+  } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
   }
-}
+};
 
 const getUserOffer = async (req, res) => {
-
-  try{
-    if (!req.body.Id ) {
+  try {
+    if (!req.body.Id) {
       return res.status(400).json({ message: "Invalid data value" });
     }
-    const user = await User.findById(req.body.Id).populate("offer")
+    const user = await User.findById(req.body.Id).populate("offer");
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
     return res.status(200).json(user.offer);
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
   }
-}
+};
 
-module.exports = { createUser,updateUser,getUserLoginStatus,getUserOffer };
+const getAllUser = AsyncHandler(async (req, res) => {
+  try {
+    const users = await User.find({});
+    console.log(users);
+    res.status(201).json({
+      users,
+    });
+  } catch (err) {
+    res.status(404);
+    throw new Error(err);
+  }
+});
+
+module.exports = { createUser, updateUser, getUserLoginStatus, getUserOffer,getAllUser };
