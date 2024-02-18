@@ -36,3 +36,12 @@ export async function addUser(data) {
     throw error;
   }
 }
+
+export async function Timeout(data) {
+  try {
+    const response = await userInstance.patch(``,data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

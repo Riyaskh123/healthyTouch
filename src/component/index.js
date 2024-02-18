@@ -6,6 +6,7 @@ import useWindowSize from "react-use/lib/useWindowSize";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import { Timeout } from '../Service';
 
 
 // const ENDPOINT = "http://127.0.0.1:3005/";
@@ -30,32 +31,53 @@ export default function Index() {
     const [count, setCount] = useState(0);
     const [start, setStart] = useState(false);
     const [confelli, setConfelli] = useState(false);
-    const [userData,setUserData] = useState();
     const socket = socketIOClient.connect(ENDPOINT);
     const { width, height } = useWindowSize();
+    let _id = ''; 
+    let cnt = 0; 
 
-    socket.on("start", data => {
-        console.log(data);
-        setUserData(data)
-        setStart(true);
-    });
+    useEffect(()=>{
+        socket.on("start", data => {
+            console.log(data);
+            _id = data._id
+            setStart(true);
+        });
+    
+    
+        socket.on("count", data => {
+            console.log(data);
+            if (data % 10 === 0) {
+                setConfelli(true)
+                setTimeout(() => {
+                    setConfelli(false)
+                }, 2000)
+            }
+            setCount(data);
+            cnt = data
+        });
+    
+        socket.on("timeout", data => {
+            if (setStart) {
+                let dt = {
+                    Id: _id,
+                    count: cnt
+                }
+                console.log(dt);
+                Timeout(dt).then((res) => {
+                    console.log(res);
+                    setStart(false);
+                    setCount(0)
+                }).catch(err => {
+                    console.log(err);
+                })
+                    setStart(false);
+                    setCount(0)
+            }
+        });
 
-
-    socket.on("count", data => {
-        console.log(data);
-        if (data % 10 === 0) {
-            setConfelli(true)
-            setTimeout(() => {
-                setConfelli(false)
-            }, 2000)
-        }
-        setCount(data);
-    });
-
-    socket.on("timeout", data => {
-        setStart(false);
-        setCount(0)
-    });
+        // return ()=>{socket.disconnect()}
+    },[])
+    
     return (
         <>{!start ?
             <div className='carosels'>
@@ -83,6 +105,11 @@ export default function Index() {
                 {/* <Confetti width={width} height={height} recycle={confelli} /> */}
                 <h1>{count}</h1>
                 <h2>{start ? 'Start pull up' : 'Thank you visit again'}</h2>
+            </div>
+        }
+        {
+            <div>
+                
             </div>
         }
         </>
