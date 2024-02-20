@@ -14,7 +14,7 @@ GPIO_ECHO = 24
 
 
 #BASE_URL = 'http://localhost:3005/'
-BASE_URL = 'http://192.168.1.17:3005/'
+BASE_URL = 'http://192.168.1.47:3005/'
 
 
 #set GPIO direction (IN / OUT)
