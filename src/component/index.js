@@ -6,11 +6,11 @@ import useWindowSize from "react-use/lib/useWindowSize";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import { Timeout } from '../Service';
+import { Timeout, getAds } from '../Service';
 
 
 // const ENDPOINT = "http://127.0.0.1:3005/";
-const ENDPOINT = "http://192.168.1.17:3005/";
+const ENDPOINT = "http://192.168.1.47:3005/";
 
 const settings = {
     showArrows: false,
@@ -31,6 +31,7 @@ export default function Index() {
     const [count, setCount] = useState(0);
     const [start, setStart] = useState(false);
     const [confelli, setConfelli] = useState(false);
+    const [ads,setAds] = useState([])
     const socket = socketIOClient.connect(ENDPOINT);
     const { width, height } = useWindowSize();
     let _id = ''; 
@@ -75,6 +76,10 @@ export default function Index() {
             }
         });
 
+        getAds().then((res)=>{
+            setAds(res.ads)
+        })
+
         // return ()=>{socket.disconnect()}
     },[])
     
@@ -82,7 +87,12 @@ export default function Index() {
         <>{!start ?
             <div className='carosels'>
                 <Carousel {...settings}>
-                    <div>
+                    {ads.map((dt)=>(
+                        <div key={dt._id}>
+                        <img src={`${dt.imageURL}`} />
+                    </div>
+                    ))}
+                    {/* <div>
                         <img src="https://www.shutterstock.com/image-vector/flash-sale-shopping-poster-banner-600nw-2147167211.jpg" />
                     </div>
                     <div>
@@ -90,7 +100,7 @@ export default function Index() {
                     </div>
                     <div>
                         <img src="https://media.cnn.com/api/v1/images/stellar/prod/160505174531-18-coca-cola-anniversary.jpg?q=w_1600,h_900,x_0,y_0,c_fill/w_1280" />
-                    </div>
+                    </div> */}
                 </Carousel>
                 <div className='QRcontainer'>
                     <div>

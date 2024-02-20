@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const baseURL = `http://${window.location.hostname}:3005/`;
-const baseURL = `http://192.168.1.17:3005/`;
+const baseURL = `http://192.168.1.47:3005/`;
 
 console.log(window.location.hostname);
 
@@ -18,6 +18,14 @@ console.log(window.location.hostname);
       "Content-Type": "application/json",
     },
   });
+
+  const ADSInstance = axios.create({
+    baseURL: `${baseURL}api/ads`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
 
 export async function machineStart() {
     try {
@@ -40,6 +48,15 @@ export async function addUser(data) {
 export async function Timeout(data) {
   try {
     const response = await userInstance.patch(``,data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getAds() {
+  try {
+    const response = await ADSInstance.get(``);
     return response.data;
   } catch (error) {
     throw error;
