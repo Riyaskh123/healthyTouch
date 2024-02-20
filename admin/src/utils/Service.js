@@ -8,7 +8,7 @@ console.log(window.location.hostname);
 const apiInstance = axios.create({
   baseURL: `${baseURL}api/`,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   }
 });
 
@@ -31,17 +31,51 @@ const apiInstance = axios.create({
 //   }
 // }
 
+
+////Advertisement
 export async function getAllAds() {
   const response = await apiInstance.get(`ads`);
   console.log(response.data);
   return response.data;
 }
 
+export async function createAds(data) {
+ 
+  const response = await apiInstance.post(`ads`,data);
+  console.log(response.data);
+  return response.data;
+}
+
+export async function deleteAd(data) {
+console.log("hehehhee")
+console.log(data)
+  const response = await apiInstance.delete(`ads/${data}`);
+  console.log(response.data);
+  return response.data;
+}
+
+
+
+//////OFFer
 export async function getAllOffer() {
   const response = await apiInstance.get(`offer`);
   console.log(response.data);
   return response.data;
 }
+
+export async function deleteOffer(data) {
+ 
+    const response = await apiInstance.delete(`offer/${data}`);
+    console.log(response.data);
+    return response.data;
+  }
+
+export async function createOffer(data) {
+  const response = await apiInstance.post(`offer`,data);
+  console.log(response.data);
+  return response.data;
+}
+
 
 export async function getAllUsers() {
   const response = await apiInstance.get(`user`);

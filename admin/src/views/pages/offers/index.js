@@ -4,7 +4,7 @@ import Content from './content'
 import Tools from './tools'
 import { Stack } from '@mui/material'
 import OfferForm from './OfferForm'
-import {getAllOffer} from '../../../utils/Service'
+import {getAllOffer,createOffer,deleteOffer} from '../../../utils/Service'
 
 
 
@@ -12,19 +12,23 @@ export default function Index() {
   const [formOpen, setFormOpen] = useState(false)
   const [offerData, setOfferData] = useState([])
 
-  useEffect(() => {
+
+  const getOffers = ()=>{
     getAllOffer().then((res)=>{
-  console.log(res.offers)
-  setOfferData(res.offers)
- }).catch((err) => {
-console.log(err)
- })
+      console.log(res.offers)
+      setOfferData(res.offers)
+     }).catch((err) => {
+    console.log(err)
+     })
+  }
+  useEffect(() => {
+    getOffers()
   }, [])
   return (
     <Stack direction={'column'} gap={2}>
-      <OfferForm open={formOpen} onClose={() => { setFormOpen(false) }} />
+      <OfferForm open={formOpen} createOffer={createOffer} getOffers={getOffers} onClose={() => { setFormOpen(false) }} />
       <Tools buttonClick={()=>setFormOpen(true)}/>
-      <Content data={offerData} updateData={()=>{console.log("Update");}}/>
+      <Content deleteOffer={deleteOffer} data={offerData} updateData={getOffers}/>
     </Stack>
   )
 }

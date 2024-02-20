@@ -72,11 +72,12 @@ const updateOffer = AsyncHandler(async (req, res) => {
 
 const deleteOffer = AsyncHandler(async (req, res) => {
   try {
-    if (!req.body.Id) {
+    const offerId = req.params.offerId; 
+    if (!offerId) {
       return res.status(400).json({ message: "Invalid Offer Id value" });
     }
 
-    const deletedOffer = await Offer.findByIdAndDelete(req.body.Id);
+    const deletedOffer = await Offer.findByIdAndDelete(offerId);
 
     if (!deletedOffer) {
       return res.status(404).json({ message: "Offer not found" });

@@ -35,7 +35,7 @@ export default function StyledTable({
                                                 if (head.toUpperCase() === 'IMAGE') {
                                                     return (<TableCell key={i}><img
                                                         style={{ height: '100px' }}
-                                                        src={`${dt[`${head}`]}`} alt='Advertisement' />
+                                                        src={`${dt[`${head}`]}`} alt='img' />
                                                     </TableCell>)
                                                 } else {
                                                     return (<TableCell key={i}>{dt[`${head}`]}</TableCell>)
