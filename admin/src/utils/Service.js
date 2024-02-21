@@ -85,6 +85,12 @@ export async function getAllUsers() {
 
 ///admin
 
+export async function adminLogin(data) {
+  const response = await apiInstance.post(`adminLogin`,data);
+  console.log(response.data);
+  return response.data;
+}
+
 //daily Limit
 
 export async function createDailyLimit(data) {

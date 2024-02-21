@@ -27,7 +27,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 
 import User1 from 'assets/images/users/user-round.svg';
-
+import { useNavigate } from 'react-router-dom';
 // assets
 import { IconLogout, IconSettings } from '@tabler/icons';
 
@@ -36,9 +36,9 @@ import { IconLogout, IconSettings } from '@tabler/icons';
 const ProfileSection = () => {
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
-  // const navigate = useNavigate();
+   const navigate = useNavigate();
 
-
+   const [admin, setAdmin] = useState('');
   const [open, setOpen] = useState(false);
   /**
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
@@ -46,6 +46,9 @@ const ProfileSection = () => {
   const anchorRef = useRef(null);
   const handleLogout = async () => {
     console.log('Logout');
+    localStorage.clear();
+    navigate("/login")
+
   };
 
   const handleClose = (event) => {
@@ -61,6 +64,10 @@ const ProfileSection = () => {
 
   const prevOpen = useRef(open);
   useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("admin"));
+    if(user){
+      setAdmin(user.user.name)
+    }
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
@@ -140,7 +147,7 @@ const ProfileSection = () => {
                       <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography variant="h4">Good Morning,</Typography>
                         <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                          Johne Doe
+                          {admin}
                         </Typography>
                       </Stack>
                       <Typography variant="subtitle2">Project Admin</Typography>
