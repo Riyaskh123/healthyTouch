@@ -5,15 +5,15 @@ import { useForm, Controller } from "react-hook-form";
 
 import StyledDialog from 'ui-component/StyledDialog';
 
-export default function LogForm({ open,addDailyLimit, onClose, isEdit = false, data={} }) {
-    
-    console.log(isEdit );
+export default function LogForm({ open,addDailyLimit,limit, onClose}) {
+   
+    console.log(limit );
     const {
         control,
         handleSubmit,
         formState: { errors },
     } = useForm({
-        defaultValues: isEdit ? data["Ads Name"] : ''
+        defaultValues:{dailyLimit :  limit }
     })
 
     const onSubmit = (data) => {

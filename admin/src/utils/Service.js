@@ -94,7 +94,13 @@ export async function adminLogin(data) {
 //daily Limit
 
 export async function createDailyLimit(data) {
-  const response = await apiInstance.post(`addDailyLimit`,data);
+  const response = await apiInstance.post(`dailyLimit`,data);
+  console.log(response.data);
+  return response.data;
+}
+
+export async function getDailyLimit() {
+  const response = await apiInstance.get(`dailyLimit`);
   console.log(response.data);
   return response.data;
 }
