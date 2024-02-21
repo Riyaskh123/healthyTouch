@@ -13,8 +13,6 @@ export default function Index() {
   const [adsData, setAdsData] = useState([])
 const getAds = () =>{
   getAllAds().then((res)=>{
-    console.log("geting--------------------------------------------------")
-    console.log(res.ads)
     setAdsData(res.ads)
    }).catch((err) => {
   console.log(err)

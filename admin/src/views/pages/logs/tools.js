@@ -1,15 +1,15 @@
-
-import {Stack, Typography } from '@mui/material'
+import { Add } from '@mui/icons-material'
+import { Button, Stack, Typography } from '@mui/material'
 import React from 'react'
 import MainCard from 'ui-component/cards/MainCard'
 
-export default function Tools() {
+export default function Tools({buttonClick}) {
     return (
         <MainCard>
             
             <Stack direction={'row'} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant='h3' color={'secondary.main'}>LOGS</Typography>
-              
+                <Button variant='contained' startIcon={<Add />} sx={{ backgroundColor: 'secondary.main' }} onClick={buttonClick}>Manage User</Button>
             </Stack>
         </MainCard>
     )

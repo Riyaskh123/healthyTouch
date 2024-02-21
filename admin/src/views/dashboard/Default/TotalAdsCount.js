@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
 import { Avatar, Box, Grid, Typography } from '@mui/material';
@@ -61,10 +62,11 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
-const TotalOrderLineChartCard = ({ isLoading,userCount }) => {
+const TotalOrderLineChartCard = ({ isLoading ,allAdsCount}) => {
   const theme = useTheme();
 
  
+
 
   return (
     <>
@@ -98,7 +100,7 @@ const TotalOrderLineChartCard = ({ isLoading,userCount }) => {
                   <Grid item xs={6}>
                     <Grid container alignItems="center">
                       <Grid item>
-                          <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>{userCount}</Typography>
+                          <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>{allAdsCount}</Typography>
                        
                       </Grid>
                       <Grid item>
@@ -121,7 +123,7 @@ const TotalOrderLineChartCard = ({ isLoading,userCount }) => {
                             color: theme.palette.primary[200]
                           }}
                         >
-                          Total Users
+                          Total Ads
                         </Typography>
                       </Grid>
                     </Grid>
