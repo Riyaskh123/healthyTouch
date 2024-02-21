@@ -4,7 +4,7 @@ import Content from './content'
 import Tools from './tools'
 import { Stack } from '@mui/material'
 import LogForm from './LogForm'
-import {getAllUsers} from '../../../utils/Service'
+import {getAllUsers,createDailyLimit} from '../../../utils/Service'
 
 
 
@@ -22,7 +22,7 @@ console.log(err)
   }, [])
   return (
     <Stack direction={'column'} gap={2}>
-      <LogForm open={formOpen} onClose={() => { setFormOpen(false) }} />
+      <LogForm open={formOpen} addDailyLimit={createDailyLimit} onClose={() => { setFormOpen(false) }} />
       <Tools buttonClick={()=>setFormOpen(true)}/>
       <Content data={logData} updateData={()=>{console.log("Update");}}/>
     </Stack>

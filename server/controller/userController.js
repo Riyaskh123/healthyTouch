@@ -5,6 +5,8 @@ var User = require("../common/userSchema.js");
 
 var Offer = require("../common/offerSchema.js");
 
+var dailylimit = require("../common/dailylimitSchema.js");
+
 let isUserLoggedIn = false;
 
 const createUser = AsyncHandler(async (req, res) => {
@@ -48,10 +50,16 @@ const createUser = AsyncHandler(async (req, res) => {
         },
       },
     ])
-      .then((results) => {
+      .then(async (results) => {
         console.log(results.length);
         console.log(results);
-        if (results.length >= 2) {
+        let limit = await dailylimit.findOne({})
+        if(!limit){
+          res.status(400);
+      throw new Error("Add daily Limit First");
+        }
+        console.log(limit)
+        if (results.length >= limit.dailyLimit) {
           // Check if last updated date is today
 
           res.status(400).json({
@@ -79,6 +87,8 @@ const createUser = AsyncHandler(async (req, res) => {
       })
       .catch((error) => {
         console.error(error);
+     
+        res.status(500).json( error.message);
       });
   } catch (err) {
     console.error(err);

@@ -2,7 +2,7 @@ const AsyncHandler = require("express-async-handler");
 var express = require("express");
 
 var Admin = require("../common/adminSchema.js");
-
+var dailylimit = require("../common/dailylimitSchema.js");
 const createAdmin = AsyncHandler(async (req, res) => {
   const { name, password, email } = req.body;
   if (!name || !password || !email) {
@@ -52,6 +52,40 @@ const adminAuth = AsyncHandler(async (req, res) => {
         return res.status(401).json({ message: "invalid user" });
     }
   });
+
+
+  const addDailyLimit = AsyncHandler(async (req, res) => {
+try{
+
+  const { dailyLimit } = req.body;
+  await dailylimit.deleteMany({});
+  const newLimit = new dailylimit({
+    dailyLimit
+  });
+
+  newLimit
+    .save()
+    .then((savedLimit) => {
+      console.log("data inserted successfully:", savedLimit);
+      res.status(201).json({
+        savedLimit,
+      });
+    }).catch((err) => {
+      console.log(err)
+      console.error("Error adding daily Limit:", err);
+      res.status(404);
+      throw new Error(err);
+    })
+ 
+}catch(err){
+  console.log("hey")
+  console.log(err)
+  console.error("Error adding daily Limit:", err);
+  res.status(404);
+  throw new Error(err);
+}
+
+  })
   
 
-module.exports = { createAdmin,adminAuth };
+module.exports = { createAdmin,adminAuth,addDailyLimit };

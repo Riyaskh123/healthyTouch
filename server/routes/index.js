@@ -12,7 +12,7 @@ var {
 } = require("../controller/offerController.js");
 
 var {
- createAdmin, adminAuth
+ createAdmin, adminAuth, addDailyLimit
 } = require("../controller/adminController.js");
 
 var {
@@ -27,6 +27,7 @@ router.get("/", function (req, res, next) {
 router.route("/ads").post(createAds).get(getAllAds).patch(updateAd)
 router.delete("/ads/:adId", deleteAd);
 router.route("/admin").post(createAdmin)
+router.route("/addDailyLimit").post(addDailyLimit)
 router.route("/adminLogin").post(adminAuth)
 router.route("/user").post(createUser).patch(updateUser).get(getAllUser)
 router.route("/check-login-status").get(getUserLoginStatus)

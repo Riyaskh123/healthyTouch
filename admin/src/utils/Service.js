@@ -76,9 +76,19 @@ export async function createOffer(data) {
   return response.data;
 }
 
-
+///users
 export async function getAllUsers() {
   const response = await apiInstance.get(`user`);
+  console.log(response.data);
+  return response.data;
+}
+
+///admin
+
+//daily Limit
+
+export async function createDailyLimit(data) {
+  const response = await apiInstance.post(`addDailyLimit`,data);
   console.log(response.data);
   return response.data;
 }

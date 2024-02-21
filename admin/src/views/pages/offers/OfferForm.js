@@ -22,9 +22,9 @@ export default function OfferForm({ open,createOffer,getOffers, onClose, isEdit 
         formState: { errors },
     } = useForm({
         defaultValues: {
-            "Offer Name": isEdit ? data["Offer Name"] : '',
-            "Lower Limit": isEdit ? data["Lower Limit"] : '',
-            "Upper Limit": isEdit ? data["Upper Limit"] : '',
+            "offerName": isEdit ? data["offerName"] : '',
+            "lowerLimit": isEdit ? data["lowerLimit"] : '',
+            "upperLimit": isEdit ? data["upperLimit"] : '',
           }
     })
 
