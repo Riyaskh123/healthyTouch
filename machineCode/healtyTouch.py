@@ -33,10 +33,10 @@ def distance():
 	StopTime = time.time()
 	# save StartTime
 	while GPIO.input(GPIO_ECHO) == 0:
-	StartTime = time.time()
+		StartTime = time.time()
 	# save time of arrival
 	while GPIO.input(GPIO_ECHO) == 1:
-	StopTime = time.time()
+		StopTime = time.time()
 	# time difference between start and arrival
 	TimeElapsed = StopTime - StartTime
 	# multiply with the sonic speed (34300 cm/s)
