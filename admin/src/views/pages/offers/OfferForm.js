@@ -1,4 +1,4 @@
-import { Button, Container, Stack, TextField, Typography } from '@mui/material'
+import { Button, Container, Stack, Switch, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useForm, Controller } from "react-hook-form";
 import { MuiFileInput } from 'mui-file-input'
@@ -14,6 +14,8 @@ import {
 
 export default function OfferForm({ open,createOffer,getOffers, onClose, isEdit = false, data={} }) {
     const [file, selectFile] = useState(isEdit && data["Image"])
+    const [status, setStatus] = useState(data.status || 'Active'); 
+
     console.log(isEdit && data["Image"]);
     console.log(data)
     const {
@@ -22,9 +24,9 @@ export default function OfferForm({ open,createOffer,getOffers, onClose, isEdit 
         formState: { errors },
     } = useForm({
         defaultValues: {
-            "offerName": isEdit ? data["offerName"] : '',
-            "lowerLimit": isEdit ? data["lowerLimit"] : '',
-            "upperLimit": isEdit ? data["upperLimit"] : '',
+            "offerName": isEdit ? data.offerName : '',
+            "lowerLimit": isEdit ? data.lowerLimit : '',
+            "upperLimit": isEdit ? data.upperLimit : '',
           }
     })
 
@@ -40,18 +42,18 @@ export default function OfferForm({ open,createOffer,getOffers, onClose, isEdit 
         uploadTask.on(
           "state_changed",
           () => {
-            // Handle upload state changes if needed
+           
           },
           (error) => {
-            // Handle upload errors
+           
             console.error(error);
           },
           () => {
-            // Handle upload completion
+            
             getDownloadURL(uploadTask.snapshot.ref)
               .then((url) => {
                 console.log(url);
-                createOffer({ "offerName": data.offerName,"lowerLimit":data.lowerLimit,"upperLimit":data.upperLimit, "imageURL": url })
+                createOffer({ "offerName": data.offerName,"lowerLimit":data.lowerLimit,"upperLimit":data.upperLimit, "imageURL": url, "status": status })
                   .then((response) => {
                     console.log(response);
                     onClose();
@@ -65,7 +67,7 @@ export default function OfferForm({ open,createOffer,getOffers, onClose, isEdit 
               .catch((error) => {
                 console.error(error);
                 toast.error(error);
-                // Handle error retrieving download URL
+               
               });
           }
         );
@@ -90,6 +92,7 @@ export default function OfferForm({ open,createOffer,getOffers, onClose, isEdit 
                                 placeholder: 'Select File'
                             }}
                         />
+                        
                         <Typography variant='h5'>Offer Name</Typography>
                         <Controller
                             name="offerName"
@@ -141,7 +144,21 @@ export default function OfferForm({ open,createOffer,getOffers, onClose, isEdit 
                             )}
                             rules={{ required: "upperLimit is required" }}
                         />
-                        <Button variant='contained' type='submit' sx={{ width: '150px' }}>Add</Button>
+                       
+                       {isEdit && ( // Render switch only if editing
+                            <Stack>
+                                <Typography variant='h5'>Status</Typography>
+                                <Switch
+                                    color='primary'
+                                    defaultValue={data.status === 'Active'} // Set default value based on status
+                                    onChange={(e) => setStatus(e.target.checked ? 'Active' : 'Inactive')}
+                                />
+                            </Stack>
+                        )}
+
+                        <Button variant='contained' type='submit' sx={{ width: '150px' }}>
+                            {isEdit ? 'Update' : 'Add'}
+                        </Button>
                     </Stack>
                 </Container>
             </form>

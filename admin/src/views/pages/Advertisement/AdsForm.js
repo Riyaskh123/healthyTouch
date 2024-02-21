@@ -34,14 +34,14 @@ export default function AdsForm({ createAds,getAds, open, onClose, isEdit = fals
         uploadTask.on(
           "state_changed",
           () => {
-            // Handle upload state changes if needed
+           
           },
           (error) => {
-            // Handle upload errors
+            
             console.error(error);
           },
           () => {
-            // Handle upload completion
+            
             getDownloadURL(uploadTask.snapshot.ref)
               .then((url) => {
                 console.log(url);
@@ -59,7 +59,7 @@ export default function AdsForm({ createAds,getAds, open, onClose, isEdit = fals
               .catch((error) => {
                 console.error(error);
                 toast.error(error);
-                // Handle error retrieving download URL
+               
               });
           }
         );
