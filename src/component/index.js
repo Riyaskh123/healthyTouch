@@ -75,7 +75,7 @@ export default function Index() {
                 </div>
             </div> :
             <div className="App">
-                <Confetti width={width} height={height} recycle={confelli} />
+                {/* <Confetti width={width} height={height} recycle={confelli} /> */}
                 <h1>{count}</h1>
                 <h2>{start ? 'Start pull up' : 'Thank you visit again'}</h2>
             </div>
