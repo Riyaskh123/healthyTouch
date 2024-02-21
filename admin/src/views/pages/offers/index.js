@@ -28,7 +28,7 @@ export default function Index() {
     <Stack direction={'column'} gap={2}>
       <OfferForm open={formOpen} createOffer={createOffer} getOffers={getOffers} onClose={() => { setFormOpen(false) }} />
       <Tools buttonClick={()=>setFormOpen(true)}/>
-      <Content deleteOffer={deleteOffer} data={offerData} updateData={getOffers}/>
+      <Content deleteOffer={deleteOffer} data={offerData} getOffers={getOffers}/>
     </Stack>
   )
 }

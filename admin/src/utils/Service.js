@@ -47,8 +47,6 @@ export async function createAds(data) {
 }
 
 export async function deleteAd(data) {
-console.log("hehehhee")
-console.log(data)
   const response = await apiInstance.delete(`ads/${data}`);
   console.log(response.data);
   return response.data;

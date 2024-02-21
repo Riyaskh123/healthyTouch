@@ -10,25 +10,33 @@ const tableHeader = [
   "upperLimit",
 ]
 
-export default function Content({deleteOffer, data, updateData }) {
+export default function Content({deleteOffer, data, getOffers }) {
   const [formOpen, setFormOpen] = useState(false)
-  const [selectedData,setselectedData] = useState({})
+  const [selectedData,setselectedData] = useState()
+  
   const tableData = tableHeaderReplace(data,["offerName","imageURL","lowerLimit","upperLimit"],tableHeader)
   const actionHandle = (e)=>{
     console.log(e);
+    let data = e.data
     if (e.action == "Edit") {
-      console.log(e.data)
+      
+      console.log(data)
       console.log("edata00----------------------")
-      setselectedData(e.data)
+      setselectedData(data)
       console.log(selectedData)
       setFormOpen(true)
     }if (e.action == "delete") {
       setselectedData(e.data)
-      deleteOffer(e.data._id )
+      deleteOffer(e.data._id ).then(()=>{
+        getOffers()
+      }).catch((err)=>{
+        console.log(err)
+      })
+
     }else{
       setselectedData()
     }
-    updateData()
+  
   }
 
   useEffect(() => {

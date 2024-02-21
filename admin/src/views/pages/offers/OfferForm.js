@@ -113,7 +113,7 @@ export default function OfferForm({ open,createOffer,getOffers, onClose, isEdit 
                             control={control}
                             render={({ field }) => (
                                 <>
-                                    <TextField {...field} placeholder="Enter lowerLimit" />
+                                    <TextField {...field} placeholder="Enter lowerLimit"  type="number"/>
                                     {errors.lowerLimit && (
                                         <span style={{ color: '#f00' }}>
                                             {errors.lowerLimit.message}
@@ -131,7 +131,7 @@ export default function OfferForm({ open,createOffer,getOffers, onClose, isEdit 
                             control={control}
                             render={({ field }) => (
                                 <>
-                                    <TextField {...field} placeholder="Enter upperLimit" />
+                                    <TextField {...field} placeholder="Enter upperLimit" type="number"/>
                                     {errors.upperLimit && (
                                         <span style={{ color: '#f00' }}>
                                             {errors.upperLimit.message}
