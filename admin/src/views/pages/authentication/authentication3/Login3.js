@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-
+import { Link,useNavigate  } from 'react-router-dom';
+import { useEffect } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
@@ -9,7 +9,8 @@ import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
-import AuthFooter from 'ui-component/cards/AuthFooter';
+import {adminLogin} from '../../../../utils/Service'
+
 
 // assets
 
@@ -18,7 +19,16 @@ import AuthFooter from 'ui-component/cards/AuthFooter';
 const Login = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-
+  const navigate = useNavigate();
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("admin"));
+    console.log(user)
+    if(user){
+      navigate("/")
+    }
+    
+  }, [])
+  
   return (
     <AuthWrapper1>
       <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
@@ -47,26 +57,20 @@ const Login = () => {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <AuthLogin />
+                    <AuthLogin adminLogin={adminLogin}/>
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
-                    <Grid item container direction="column" alignItems="center" xs={12}>
-                      <Typography component={Link} to="/pages/register/register3" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        Don&apos;t have an account?
-                      </Typography>
-                    </Grid>
+                 
                   </Grid>
                 </Grid>
               </AuthCardWrapper>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-          <AuthFooter />
-        </Grid>
+       
       </Grid>
     </AuthWrapper1>
   );

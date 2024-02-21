@@ -2,7 +2,7 @@ const AsyncHandler = require("express-async-handler");
 var express = require("express");
 
 var Admin = require("../common/adminSchema.js");
-
+var dailylimit = require("../common/dailylimitSchema.js");
 const createAdmin = AsyncHandler(async (req, res) => {
   const { name, password, email } = req.body;
   if (!name || !password || !email) {
@@ -13,7 +13,7 @@ const createAdmin = AsyncHandler(async (req, res) => {
   const newAdmin = new Admin({
     name,
     password,
-    email
+    email,
   });
 
   newAdmin
@@ -31,27 +31,69 @@ const createAdmin = AsyncHandler(async (req, res) => {
     });
 });
 
-
 const adminAuth = AsyncHandler(async (req, res) => {
-    const { email, password } = req.body;
-    const user = await Admin.findOne({ email: email });
-    if (user ) {
-      if ((await user.matchPassword(password))) {
-        console.log("Password")
-        res.status(200).json({
-          user:{
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-          }
-        });
-      } else {
-        return res.status(401).json({ message: "invalid password" });
-      }
+  const { email, password } = req.body;
+  const user = await Admin.findOne({ email: email });
+  if (user) {
+    if (await user.matchPassword(password)) {
+      console.log("Password");
+      res.status(200).json({
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+      });
     } else {
-        return res.status(401).json({ message: "invalid user" });
+      return res.status(401).json({ message: "invalid password" });
     }
-  });
-  
+  } else {
+    return res.status(401).json({ message: "invalid user" });
+  }
+});
 
-module.exports = { createAdmin,adminAuth };
+const addDailyLimit = AsyncHandler(async (req, res) => {
+  try {
+    const { dailyLimit } = req.body;
+    await dailylimit.deleteMany({});
+    const newLimit = new dailylimit({
+      dailyLimit,
+    });
+
+    newLimit
+      .save()
+      .then((savedLimit) => {
+        console.log("data inserted successfully:", savedLimit);
+        res.status(201).json({
+          savedLimit,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        console.error("Error adding daily Limit:", err);
+        res.status(404);
+        throw new Error(err);
+      });
+  } catch (err) {
+    console.log("hey");
+    console.log(err);
+    console.error("Error adding daily Limit:", err);
+    res.status(404);
+    throw new Error(err);
+  }
+});
+
+const getDailyLimit = AsyncHandler(async (req, res) => {
+  try {
+    let limit = await dailylimit.findOne({});
+    res.status(201).json({
+      limit,
+    });
+  } catch (err) {
+    console.error("Error getting daily Limit:", err);
+    res.status(404);
+    throw new Error(err);
+  }
+});
+
+module.exports = { createAdmin, adminAuth, addDailyLimit, getDailyLimit };

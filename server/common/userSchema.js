@@ -17,20 +17,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         default : 0
     },
-    offers:[
-       {
-        offerID:{
+    offer:{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Offer"
         }
-        
-       }
-    ],
-    dailyCount:{
-        type: Number,
-        required: true,
-        default: 1
-    }
+    
 },
 {
     timestamps:true

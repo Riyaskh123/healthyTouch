@@ -5,8 +5,13 @@ import { MuiFileInput } from 'mui-file-input'
 import { AttachFile } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import StyledDialog from 'ui-component/StyledDialog';
-
-export default function AdsForm({ open, onClose, isEdit = false, data={} }) {
+import storage from '../../../utils/firebase-config';
+import {
+    ref,
+    uploadBytesResumable,
+    getDownloadURL 
+} from "firebase/storage";
+export default function AdsForm({ createAds,getAds, open, onClose, isEdit = false, data={} }) {
     const [file, selectFile] = useState(isEdit && data["Image"])
     console.log(isEdit && data["Image"]);
     const {
@@ -18,13 +23,48 @@ export default function AdsForm({ open, onClose, isEdit = false, data={} }) {
     })
 
     const onSubmit = (data) => {
+    
         if (!file) {
             toast.error("select Image");
             return
         }
-        console.log(data);
+        const storageRef = ref(storage, `/files/${data.AdsName}${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        
+        uploadTask.on(
+          "state_changed",
+          () => {
+           
+          },
+          (error) => {
+            
+            console.error(error);
+          },
+          () => {
+            
+            getDownloadURL(uploadTask.snapshot.ref)
+              .then((url) => {
+                console.log(url);
+                createAds({ "adName": data.AdsName, "imageURL": url })
+                  .then((response) => {
+                    console.log(response);
+                    onClose();
+                    getAds()
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                    toast.error(error.response.data.message);
+                  });
+              })
+              .catch((error) => {
+                console.error(error);
+                toast.error(error);
+               
+              });
+          }
+        );
     }
-    
+        
     return (
         
         <StyledDialog open={open} onClose={onClose} title={`${isEdit ? "Edit" : "Add"} Advertisement`}>
@@ -51,9 +91,9 @@ export default function AdsForm({ open, onClose, isEdit = false, data={} }) {
                             render={({ field }) => (
                                 <>
                                     <TextField {...field} placeholder="Enter Advertisement Name" />
-                                    {errors.AdsName && (
+                                    {errors.AdName && (
                                         <span style={{ color: '#f00' }}>
-                                            {errors.AdsName.message}
+                                            {errors.AdName.message}
                                         </span>
                                     )}
                                 </>

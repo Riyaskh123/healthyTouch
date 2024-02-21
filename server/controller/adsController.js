@@ -4,12 +4,15 @@ var express = require("express");
 var Ads = require("../common/adsSchema.js");
 
 const createAds = AsyncHandler(async (req, res) => {
+  console.log("fdsfaf")
   const { adName, imageURL } = req.body;
+  console.log(req.body)
+  try{
   if (!adName || !imageURL) {
     res.status(400);
     throw new Error("Data Missing");
   }
-
+  console.log("hey")
   const newAd = new Ads({
     adName,
     imageURL,
@@ -28,6 +31,10 @@ const createAds = AsyncHandler(async (req, res) => {
       res.status(404);
       throw new Error(err);
     });
+  }catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
 });
 
 const getAllAds = AsyncHandler(async (req, res) => {
@@ -65,11 +72,13 @@ const updateAd = AsyncHandler(async (req, res) => {
 
 const deleteAd = AsyncHandler(async (req, res) => {
     try {
-      if (!req.body.Id) {
+
+      const adId = req.params.adId; // Extract adId from URL parameters
+      if (!adId) {
         return res.status(400).json({ message: "Invalid Ad Id value" });
       }
-  
-      const deletedAd = await Ads.findByIdAndDelete(req.body.Id);
+  console.log(adId)
+      const deletedAd = await Ads.findByIdAndDelete(adId);
   
       if (!deletedAd) {
         return res.status(404).json({ message: "Ad not found" });

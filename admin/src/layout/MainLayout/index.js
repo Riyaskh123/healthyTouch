@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
-
+import { Outlet,useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
@@ -55,6 +55,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 const MainLayout = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
   // Handle left drawer
   const leftDrawerOpened = useSelector((state) => state.customization.opened);
@@ -63,6 +64,15 @@ const MainLayout = () => {
     dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
   };
 
+
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("admin"));
+
+    if(!user){
+      navigate("/login")
+    }
+  }, [])
+  
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
