@@ -97,7 +97,7 @@ export default function Index() {
                     console.log(res);
                     setofferImage(res.offer.imageURL)
                     setModalOpen(true)
-                    
+
                     setTimeout(() => {
                         setStart(false);
                         setCount(0)
@@ -106,6 +106,9 @@ export default function Index() {
                 }).catch(err => {
                     console.log(err);
                     toast.error(err.response.data.message)
+                    setStart(false);
+                    setCount(0)
+                    setModalOpen(false)
                 })
             }
         });

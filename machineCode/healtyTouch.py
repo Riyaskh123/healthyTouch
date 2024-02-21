@@ -48,7 +48,7 @@ if __name__ == '__main__':
 	try:
 		count=0
 		distLimit = 50
-		timeoutDiff = 5
+		timeoutDiff = 14
 		while True:
 			status = False
 			res = requests.get(BASE_URL + 'api/check-login-status')
