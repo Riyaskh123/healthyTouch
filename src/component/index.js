@@ -5,15 +5,12 @@ import Confetti from 'react-confetti';
 import useWindowSize from "react-use/lib/useWindowSize";
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import { Timeout, getAds } from '../Service';
+import { Timeout, baseURL, getAds } from '../Service';
 import pullbg from '../assets/pullupbg.jpg'
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 
-
-// const ENDPOINT = "http://127.0.0.1:3005/";
-const ENDPOINT = "http://192.168.1.47:3005/";
 
 const renderTime = ({ remainingTime }) => {
     if (remainingTime === 0) {
@@ -57,10 +54,11 @@ export default function Index() {
     const [ads, setAds] = useState([])
     const [isModalOpen, setModalOpen] = useState(false)
     const [offerImage, setofferImage] = useState(``)
+    const [tmeout,setTimout] = useState(false)
 
 
 
-    const socket = socketIOClient.connect(ENDPOINT);
+    const socket = socketIOClient.connect(baseURL);
     const { width, height } = useWindowSize();
     let _id = '';
     let cnt = 0;
@@ -70,6 +68,7 @@ export default function Index() {
             console.log(data);
             _id = data._id
             setStart(true);
+            setTimout(true)
         });
 
 
@@ -87,11 +86,12 @@ export default function Index() {
         });
 
         socket.on("timeout", data => {
-            if (setStart) {
+            if (tmeout) {
                 let dt = {
                     Id: _id,
                     count: cnt
                 }
+                setTimout(false)
                 console.log(dt);
                 Timeout(dt).then((res) => {
                     console.log(res);
@@ -115,6 +115,8 @@ export default function Index() {
 
         getAds().then((res) => {
             setAds(res.ads)
+        }).catch(Err=>{
+            toast.error("No Internet")
         })
 
         // return ()=>{socket.disconnect()}

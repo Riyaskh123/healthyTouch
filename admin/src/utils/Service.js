@@ -40,7 +40,6 @@ export async function getAllAds() {
 }
 
 export async function createAds(data) {
- 
   const response = await apiInstance.post(`ads`,data);
   console.log(response.data);
   return response.data;

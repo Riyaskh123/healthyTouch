@@ -1,4 +1,4 @@
-import { Link,useNavigate  } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -9,7 +9,7 @@ import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
-import {adminLogin} from '../../../../utils/Service'
+import { adminLogin } from '../../../../utils/Service'
 
 
 // assets
@@ -23,12 +23,12 @@ const Login = () => {
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("admin"));
     console.log(user)
-    if(user){
-      navigate("/")
+    if (user) {
+      navigate("/dashboard")
     }
-    
+
   }, [])
-  
+
   return (
     <AuthWrapper1>
       <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
@@ -57,20 +57,20 @@ const Login = () => {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <AuthLogin adminLogin={adminLogin}/>
+                    <AuthLogin adminLogin={adminLogin} />
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
-                 
+
                   </Grid>
                 </Grid>
               </AuthCardWrapper>
             </Grid>
           </Grid>
         </Grid>
-       
+
       </Grid>
     </AuthWrapper1>
   );

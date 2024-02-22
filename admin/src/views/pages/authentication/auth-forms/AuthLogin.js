@@ -29,7 +29,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
-const FirebaseLogin = ({adminLogin, ...others }) => {
+const FirebaseLogin = ({ adminLogin, ...others }) => {
   const theme = useTheme();
 
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const FirebaseLogin = ({adminLogin, ...others }) => {
 
   return (
     <>
-      
+
 
       <Formik
         initialValues={{
@@ -59,21 +59,21 @@ const FirebaseLogin = ({adminLogin, ...others }) => {
         })}
         onSubmit={async (values) => {
           try {
-          
-           adminLogin({"email": values.email, "password": values.password}).then((res)=>{
-            console.log(res)
-            localStorage.setItem("admin",JSON.stringify(res));
-            toast.success("Login Success");
-    navigate("/")
 
-           }).catch((err) => {
-            toast.error(err.response.data.message);
-          console.log(err) 
-          });
+            adminLogin({ "email": values.email, "password": values.password }).then((res) => {
+              console.log(res)
+              localStorage.setItem("admin", JSON.stringify(res));
+              toast.success("Login Success");
+              navigate("/dashboard")
+
+            }).catch((err) => {
+              toast.error(err.response.data.message);
+              console.log(err)
+            });
           } catch (err) {
             toast.error(err);
             console.error(err);
-       
+
           }
         }}
       >
@@ -129,7 +129,7 @@ const FirebaseLogin = ({adminLogin, ...others }) => {
                 </FormHelperText>
               )}
             </FormControl>
-         
+
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
