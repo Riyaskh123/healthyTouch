@@ -11,6 +11,7 @@ import {getAllOffer,createOffer,deleteOffer} from '../../../utils/Service'
 export default function Index() {
   const [formOpen, setFormOpen] = useState(false)
   const [offerData, setOfferData] = useState([])
+  const [selectedData, setselectedData] = useState();
 
 
   const getOffers = ()=>{
@@ -21,14 +22,36 @@ export default function Index() {
     console.log(err)
      })
   }
+
+  const editDeleteHandle = (e)=>{
+    console.log(e);
+    setselectedData(e.data);
+    if (e.action == 'Edit') {
+      setFormOpen(true);
+    }
+    if (e.action == 'delete') {
+      deleteOffer(e.data._id)
+        .then(() => {
+          getOffers();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
+
+  
+
+
   useEffect(() => {
     getOffers()
   }, [])
   return (
     <Stack direction={'column'} gap={2}>
-      <OfferForm open={formOpen} createOffer={createOffer} getOffers={getOffers} onClose={() => { setFormOpen(false) }} />
-      <Tools buttonClick={()=>setFormOpen(true)}/>
-      <Content deleteOffer={deleteOffer} data={offerData} getOffers={getOffers}/>
+      <OfferForm open={formOpen} createOffer={createOffer} getOffers={getOffers} onClose={() => { setFormOpen(false) }} data={selectedData} isEdit={selectedData ? true : false} />
+      <Tools buttonClick={()=>{setselectedData();setFormOpen(true)}}/>
+      <Content data={offerData} editDeleteHandle={editDeleteHandle}/>
     </Stack>
   )
 }
