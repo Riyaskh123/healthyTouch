@@ -15,8 +15,7 @@ import {
 export default function OfferForm({ open,createOffer,getOffers, onClose, isEdit = false, data={} }) {
     const [file, selectFile] = useState(isEdit && data["Image"])
     const [status, setStatus] = useState(data.status || 'Active'); 
-
-    console.log(isEdit && data["Image"]);
+    
     console.log(data)
     const {
         control,
