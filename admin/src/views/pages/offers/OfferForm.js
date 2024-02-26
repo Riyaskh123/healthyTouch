@@ -41,6 +41,11 @@ export default function OfferForm({ open, createOffer,updateOffer, getOffers, on
                 return
             }
         }
+
+        if(data.lowerLimit >= data.upperLimit){
+            toast.error("upper limit must be greater than lower limit");
+            return
+        }
         console.log(editImg)
         console.log("heyyy")
         if(editImg){
