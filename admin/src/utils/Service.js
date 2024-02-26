@@ -67,6 +67,13 @@ export async function deleteOffer(data) {
     return response.data;
   }
 
+  export async function updateOffer(data) {
+ 
+    const response = await apiInstance.patch(`offer`,data);
+    console.log(response.data);
+    return response.data;
+  }
+
 export async function createOffer(data) {
   const response = await apiInstance.post(`offer`,data);
   console.log(response.data);

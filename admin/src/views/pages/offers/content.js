@@ -3,11 +3,11 @@ import StyledTable from 'ui-component/StyledTable';
 import { tableHeaderReplace } from 'utils/tableHeaderReplace';
 // import AdsForm from './OfferForm';
 
-const tableHeader = ['Offer Name', 'Image', 'lowerLimit', 'upperLimit'];
+const tableHeader = ['Offer Name', 'Image', 'lowerLimit', 'upperLimit','status'];
 
 export default function Content({ data,editDeleteHandle }) {
 
-  const tableData = tableHeaderReplace(data, ['offerName', 'imageURL', 'lowerLimit', 'upperLimit'], tableHeader);
+  const tableData = tableHeaderReplace(data, ['offerName', 'imageURL', 'lowerLimit', 'upperLimit','status'], tableHeader);
 
   return (
     <>

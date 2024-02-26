@@ -4,7 +4,7 @@ import Content from './content'
 import Tools from './tools'
 import { Stack } from '@mui/material'
 import OfferForm from './OfferForm'
-import {getAllOffer,createOffer,deleteOffer} from '../../../utils/Service'
+import {getAllOffer,createOffer,deleteOffer,updateOffer} from '../../../utils/Service'
 
 
 
@@ -49,7 +49,7 @@ export default function Index() {
   }, [])
   return (
     <Stack direction={'column'} gap={2}>
-      <OfferForm open={formOpen} createOffer={createOffer} getOffers={getOffers} onClose={() => { setFormOpen(false) }} data={selectedData} isEdit={selectedData ? true : false} />
+      <OfferForm open={formOpen} createOffer={createOffer} getOffers={getOffers} updateOffer={updateOffer} onClose={() => { setFormOpen(false) }} data={selectedData} isEdit={selectedData ? true : false} />
       <Tools buttonClick={()=>{setselectedData();setFormOpen(true)}}/>
       <Content data={offerData} editDeleteHandle={editDeleteHandle}/>
     </Stack>

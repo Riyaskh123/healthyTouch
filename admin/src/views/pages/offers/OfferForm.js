@@ -12,10 +12,11 @@ import {
     getDownloadURL
 } from "firebase/storage";
 
-export default function OfferForm({ open, createOffer, getOffers, onClose, isEdit = false, data }) {
+export default function OfferForm({ open, createOffer,updateOffer, getOffers, onClose, isEdit = false, data }) {
     const [file, selectFile] = useState()
-    const [status, setStatus] = useState(isEdit && data ? data.status === 'Active' ? true : false : false);
-
+    const [status, setStatus] = useState(isEdit && data ?  data.status : "Active");
+    const [id,setId]= useState('')
+  const [editImg, setEditImg] = useState()
     console.log(data)
     const {
         control,
@@ -34,64 +35,112 @@ export default function OfferForm({ open, createOffer, getOffers, onClose, isEdi
         createOffers(data)
     }
     const createOffers = (data) => {
-        if (!file) {
-            toast.error("select Image");
-            return
-        }
-        const storageRef = ref(storage, `/files/${data.offerName}${file.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, file);
-
-        uploadTask.on(
-            "state_changed",
-            () => {
-
-            },
-            (error) => {
-
-                console.error(error);
-            },
-            () => {
-
-                getDownloadURL(uploadTask.snapshot.ref)
-                    .then((url) => {
-                        console.log(url);
-                        createOffer({ "offerName": data.offerName, "lowerLimit": data.lowerLimit, "upperLimit": data.upperLimit, "imageURL": url, "status": status })
-                            .then((response) => {
-                                console.log(response);
-                                onClose();
-                                getOffers()
-                            })
-                            .catch((error) => {
-                                console.error(error);
-                                toast.error(error.response.data.message);
-                            });
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        toast.error(error);
-
-                    });
+        if (!file ) {
+            if(!editImg){
+                toast.error("select Image");
+                return
             }
-        );
+        }
+        console.log(editImg)
+        console.log("heyyy")
+        if(editImg){
+            console.log("uiiiiiiiiiii")
+            updateOffer({"Id":id, "offerName": data.offerName, "imageURL": editImg, "lowerLimit": data.lowerLimit, "upperLimit": data.upperLimit, "status": status })
+            .then((response) => {
+                console.log(response);
+console.log(data.Image)
+                onClose();
+                setEditImg()
+                getOffers()
+            })
+            .catch((error) => {
+                console.log("heyheyehyehe")
+                console.error(error);
+                toast.error("Error Occured");
+            });
+
+        }else{
+            const storageRef = ref(storage, `/files/${data.offerName}${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+    
+            uploadTask.on(
+                "state_changed",
+                () => {
+    
+                },
+                (error) => {
+    
+                    console.error(error);
+                },
+                () => {
+    
+                    getDownloadURL(uploadTask.snapshot.ref)
+                        .then((url) => {
+                            console.log(url);
+                            if(isEdit){
+                                updateOffer({ "Id":id,"offerName": data.offerName, "lowerLimit": data.lowerLimit, "upperLimit": data.upperLimit, "imageURL": url, "status": status })
+                                .then((response) => {
+                                    console.log(response);
+                                    onClose();
+                                    setEditImg()
+                                    getOffers()
+                                })
+                                .catch((error) => {
+                                    console.error(error);
+                                    toast.error(error.response.data.message);
+                                });
+                            }else{
+                                createOffer({ "offerName": data.offerName, "lowerLimit": data.lowerLimit, "upperLimit": data.upperLimit, "imageURL": url, "status": status })
+                                .then((response) => {
+                                    console.log(response);
+                                    onClose();
+                                    setEditImg()
+                                    getOffers()
+                                })
+                                .catch((error) => {
+                                    console.error(error);
+                                    toast.error(error.response.data.message);
+                                });
+                            }
+                            
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                            toast.error(error);
+    
+                        });
+                }
+            );
+        }
+       
     }
     useEffect(() => {
         console.log(data);
         setValue("offerName", isEdit ? data["Offer Name"] : '')
         setValue("lowerLimit", isEdit ? data.lowerLimit : '')
         setValue("upperLimit", isEdit ? data.upperLimit : '')
+        isEdit? setEditImg(data.Image) :''
+        isEdit?setId(data._id):''
     }, [data])
 
 
     return (
 
-        <StyledDialog open={open} onClose={onClose} title={`${isEdit ? "Edit" : "Add"} Offer`}>
+        <StyledDialog open={open} onClose={()=>{
+            setEditImg()
+            selectFile()
+            onClose()
+        }} title={`${isEdit ? "Edit" : "Add"} Offer`}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Container>
                     <Stack direction={'column'} sx={{ p: 2 }} spacing={1}>
                         <Typography variant='h5'>Select Image for Offer</Typography>
                         <MuiFileInput
                             value={file}
-                            onChange={(e) => { selectFile(e) }}
+                            onChange={(e) => { 
+                                selectFile(e) 
+                            setEditImg()
+                            }}
                             placeholder='select File'
                             InputProps={{
                                 inputProps: {
@@ -101,7 +150,9 @@ export default function OfferForm({ open, createOffer, getOffers, onClose, isEdi
                                 placeholder: 'Select File'
                             }}
                         />
-
+{editImg? (
+    <img src={data.Image} alt="no item"/>
+):<></>}
                         <Typography variant='h5'>Offer Name</Typography>
                         <Controller
                             name="offerName"
@@ -159,7 +210,7 @@ export default function OfferForm({ open, createOffer, getOffers, onClose, isEdi
                                 <Typography variant='h5'>Status</Typography>
                                 <Switch
                                     color='primary'
-                                    defaultValue={data.status === 'Active'} // Set default value based on status
+                                    checked={status==="Active"} // Set default value based on status
                                     onChange={(e) => setStatus(e.target.checked ? 'Active' : 'Inactive')}
                                 />
                             </Stack>

@@ -67,7 +67,11 @@ export default function AdsForm({ createAds,getAds, open, onClose, isEdit = fals
         
     return (
         
-        <StyledDialog open={open} onClose={onClose} title={`${isEdit ? "Edit" : "Add"} Advertisement`}>
+        <StyledDialog open={open} onClose={()=>{
+            setEditImg()
+            selectFile()
+            onClose()
+        }}  title={`${isEdit ? "Edit" : "Add"} Advertisement`}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Container>
                     <Stack direction={'column'} sx={{ p: 2 }} spacing={1}>

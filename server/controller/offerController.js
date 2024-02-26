@@ -8,7 +8,8 @@ const createOffer = AsyncHandler(async (req, res) => {
   const { offerName, imageURL, lowerLimit, upperLimit } = req.body;
   if (!offerName || !imageURL || !lowerLimit || !upperLimit) {
     console.log("error happen")
-    res.status(400);
+    console.log(req.body)
+    res.status(404);
     throw new Error("Data Missing");
   }
 
@@ -49,9 +50,17 @@ const getAllOffer = AsyncHandler(async (req, res) => {
 });
 
 const updateOffer = AsyncHandler(async (req, res) => {
+  console.log("ivdethi")
+  console.log(req.body)
   try {
     if (req.body.status && !["Active", "Inactive"].includes(req.body.status)) {
       return res.status(400).json({ message: "Invalid status value" });
+    }
+
+
+    if(!req.body.Id){
+     console.log("heyid")
+      return res.status(400).json({ message: "Id Missing" });
     }
 
     const updatedOffer = await Offer.findByIdAndUpdate(req.body.Id, req.body, {
