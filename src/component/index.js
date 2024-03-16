@@ -66,6 +66,7 @@ export default function Index() {
     useEffect(() => {
         socket.on("start", data => {
             console.log(data);
+            console.log("start effect---------------------------------------------------------------")
             _id = data._id
             setStart(true);
             setTimout(true)
@@ -86,7 +87,8 @@ export default function Index() {
         });
 
         socket.on("timeout", data => {
-            if (tmeout) {
+            console.log("heyehye timeout")
+            console.log(tmeout)
                 let dt = {
                     Id: _id,
                     count: cnt
@@ -95,6 +97,7 @@ export default function Index() {
                 console.log(dt);
                 Timeout(dt).then((res) => {
                     console.log(res);
+                    console.log("api response--------------------------------------------------------------------")
                     setofferImage(res.offer.imageURL)
                     setModalOpen(true)
 
@@ -110,7 +113,7 @@ export default function Index() {
                     setCount(0)
                     setModalOpen(false)
                 })
-            }
+            
         });
 
         getAds().then((res) => {
@@ -135,8 +138,7 @@ export default function Index() {
                 <div className='QRcontainer'>
                     <div>
                         <h2>SCAN QR</h2>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500sk</p>
+                        <p>Scan QR from your mobile phone and fill your details and get exciting offers</p>
                     </div>
                     <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${window.location.href}addcustomer`} />
                 </div>

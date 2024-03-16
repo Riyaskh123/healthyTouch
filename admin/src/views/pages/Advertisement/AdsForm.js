@@ -68,8 +68,9 @@ export default function AdsForm({ createAds,getAds, open, onClose, isEdit = fals
     return (
         
         <StyledDialog open={open} onClose={()=>{
-            setEditImg()
+          
             selectFile()
+           
             onClose()
         }}  title={`${isEdit ? "Edit" : "Add"} Advertisement`}>
             <form onSubmit={handleSubmit(onSubmit)}>

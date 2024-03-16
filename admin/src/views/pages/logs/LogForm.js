@@ -1,19 +1,20 @@
 import { Button, Container, Stack, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { useForm, Controller } from "react-hook-form";
 
 
 import StyledDialog from 'ui-component/StyledDialog';
 
 export default function LogForm({ open,addDailyLimit,limit, onClose}) {
-   
-    console.log(limit );
+   const [dlimit,setDlimit] = useState(limit)
+    console.log(limit);
+    console.log(dlimit)
     const {
         control,
         handleSubmit,
         formState: { errors },
     } = useForm({
-        defaultValues:{dailyLimit :  limit }
+        defaultValues:{dailyLimit :  dlimit }
     })
 
     const onSubmit = (data) => {
@@ -23,6 +24,12 @@ export default function LogForm({ open,addDailyLimit,limit, onClose}) {
         onClose()
     }
     
+
+    useEffect(() => {
+    
+setDlimit(limit)
+
+}, [])
     return (
         
         <StyledDialog open={open} onClose={onClose} title={`Manage Daily Limit`}>

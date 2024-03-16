@@ -1,6 +1,13 @@
 const AsyncHandler = require("express-async-handler");
 var express = require("express");
 
+
+
+const formData = require('form-data');
+const Mailgun = require('mailgun.js');
+const mailgun = new Mailgun(formData);
+const mg = mailgun.client({username: 'api', key: '9b499bf6a0c51abcc760dec1c601c43d-b02bcf9f-88f2236e'});
+
 var User = require("../common/userSchema.js");
 
 var Offer = require("../common/offerSchema.js");
@@ -117,17 +124,53 @@ const updateUser = AsyncHandler(async (req, res) => {
       req.body.offer = randomItem._id;
     }
     const updatedUser = await User.findByIdAndUpdate(req.body.Id, req.body);
-
     isUserLoggedIn = false;
+
+    
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
+    
+  
+
+
     if (!randomItem) {
       return res.status(404).json({ message: "You dont have offer now" });
     } else {
       let userWithOffer = await User.findById(updatedUser._id).populate(
         "offer"
       );
+
+  ///send mail
+  console.log(updatedUser.email)
+  console.log(randomItem.offerName)
+  // Email options
+
+
+  mg.messages.create('sandbox-123.mailgun.org', {
+    from: "Excited User <mailgun@sandbox-123.mailgun.org>",
+    to: updatedUser.email,
+    subject: "Hello",
+    text: "Testing some Mailgun awesomeness!",
+    html: "<h1>Testing some Mailgun awesomeness!</h1>"
+  })
+  .then(msg => console.log(msg)) // logs response data
+  .catch(err => console.log(err)); // logs any error
+
+
+
+// const data = {
+// 	from: "Mailgun Sandbox <postmaster@sandbox9aa0ee66c63b4bfd899a5ac9dc507d7b.mailgun.org>",
+// 	to: updatedUser.email,
+// 	subject: "Congratulations on winning offer",
+// 	text:'Thankyou for participating healthyTouch, your coupon code:'+ randomItem.offerName
+// };
+// mg.messages().send(data, function (error, body) {
+// 	console.log(body);
+//   console.log(error)
+// });
+
+
 
       res.json(userWithOffer);
     }

@@ -18,6 +18,13 @@ export default function AddCustomer() {
       setErrorMsg("Enter Valid Mobile")
       return false
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+        setErrorMsg("Enter Valid Email");
+        return false;
+    }
     addUser({
       "name": name,
       "email": email,

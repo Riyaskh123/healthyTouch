@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const baseURL = `http://${window.location.hostname}:3005/`;
-// const baseURL = `http://192.168.1.47:3005/`;
+//export const baseURL = `http://${window.location.hostname}:3005/`;
+export const baseURL = `http://192.168.1.32:3005/`;
 
 console.log(window.location.hostname);
 
