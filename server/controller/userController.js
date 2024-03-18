@@ -160,10 +160,10 @@ const updateUser = AsyncHandler(async (req, res) => {
       // Email options
 
       const mailOptions = {
-        from: "noreply.healthytouch@gmail.com",
-        to: updatedUser.email,
-        subject: "Hello from Nodemailer",
-        text: "This is a test email sent using Nodemailer.",
+      	from: "noreply.healthytouch@gmail.com",
+      	to: updatedUser.email,
+      	subject: "Congratulations on winning offer",
+      	text:'Thankyou for participating healthyTouch, your coupon code:'+ randomItem.offerName
       };
     
       transporter.sendMail(mailOptions, (error, info) => {
