@@ -16,7 +16,7 @@ var {
 } = require("../controller/adminController.js");
 
 var {
-  createUser,updateUser,getUserLoginStatus,getUserOffer,getAllUser
+  createUser,updateUser,getUserLoginStatus,getUserOffer,getAllUser, sendmail
  } = require("../controller/userController.js");
 
 router.get("/", function (req, res, next) {
@@ -34,4 +34,5 @@ router.route("/check-login-status").get(getUserLoginStatus)
 router.route("/get-user-offer").post(getUserOffer)
 router.route("/offer").post(createOffer).get(getAllOffer).patch(updateOffer)
 router.delete("/offer/:offerId", deleteOffer);
+router.get("/sendmail",sendmail);
 module.exports = router;

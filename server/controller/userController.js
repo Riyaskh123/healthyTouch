@@ -6,13 +6,26 @@ var express = require("express");
 const formData = require('form-data');
 const Mailgun = require('mailgun.js');
 const mailgun = new Mailgun(formData);
-const mg = mailgun.client({username: 'api', key: '9b499bf6a0c51abcc760dec1c601c43d-b02bcf9f-88f2236e'});
+const mg = mailgun.client({ username: 'api', key: '9b499bf6a0c51abcc760dec1c601c43d-b02bcf9f-88f2236e' });
 
 var User = require("../common/userSchema.js");
 
 var Offer = require("../common/offerSchema.js");
 
 var dailylimit = require("../common/dailylimitSchema.js");
+
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "noreply.healthytouch@gmail.com",
+    pass: "lnqx ykod ncro udhp",
+  },
+});
 
 let isUserLoggedIn = false;
 
@@ -61,9 +74,9 @@ const createUser = AsyncHandler(async (req, res) => {
         console.log(results.length);
         console.log(results);
         let limit = await dailylimit.findOne({})
-        if(!limit){
+        if (!limit) {
           res.status(400);
-      throw new Error("Add daily Limit First");
+          throw new Error("Add daily Limit First");
         }
         console.log(limit)
         if (results.length >= limit.dailyLimit) {
@@ -94,8 +107,8 @@ const createUser = AsyncHandler(async (req, res) => {
       })
       .catch((error) => {
         console.error(error);
-     
-        res.status(500).json( error.message);
+
+        res.status(500).json(error.message);
       });
   } catch (err) {
     console.error(err);
@@ -126,12 +139,12 @@ const updateUser = AsyncHandler(async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(req.body.Id, req.body);
     isUserLoggedIn = false;
 
-    
+
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
-    
-  
+
+
 
 
     if (!randomItem) {
@@ -141,34 +154,48 @@ const updateUser = AsyncHandler(async (req, res) => {
         "offer"
       );
 
-  ///send mail
-  console.log(updatedUser.email)
-  console.log(randomItem.offerName)
-  // Email options
+      ///send mail
+      console.log(updatedUser.email)
+      console.log(randomItem.offerName)
+      // Email options
+
+      const mailOptions = {
+        from: "noreply.healthytouch@gmail.com",
+        to: updatedUser.email,
+        subject: "Hello from Nodemailer",
+        text: "This is a test email sent using Nodemailer.",
+      };
+    
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error("Error sending email: ", error);
+        } else {
+          console.log("Email sent: ", info.response);
+        }
+      });
+
+      // mg.messages.create('sandbox-123.mailgun.org', {
+      //   from: "Excited User <mailgun@sandbox-123.mailgun.org>",
+      //   to: updatedUser.email,
+      //   subject: "Hello",
+      //   text: "Testing some Mailgun awesomeness!",
+      //   html: "<h1>Testing some Mailgun awesomeness!</h1>"
+      // })
+      //   .then(msg => console.log(msg)) // logs response data
+      //   .catch(err => console.log(err)); // logs any error
 
 
-  mg.messages.create('sandbox-123.mailgun.org', {
-    from: "Excited User <mailgun@sandbox-123.mailgun.org>",
-    to: updatedUser.email,
-    subject: "Hello",
-    text: "Testing some Mailgun awesomeness!",
-    html: "<h1>Testing some Mailgun awesomeness!</h1>"
-  })
-  .then(msg => console.log(msg)) // logs response data
-  .catch(err => console.log(err)); // logs any error
 
-
-
-// const data = {
-// 	from: "Mailgun Sandbox <postmaster@sandbox9aa0ee66c63b4bfd899a5ac9dc507d7b.mailgun.org>",
-// 	to: updatedUser.email,
-// 	subject: "Congratulations on winning offer",
-// 	text:'Thankyou for participating healthyTouch, your coupon code:'+ randomItem.offerName
-// };
-// mg.messages().send(data, function (error, body) {
-// 	console.log(body);
-//   console.log(error)
-// });
+      // const data = {
+      // 	from: "Mailgun Sandbox <postmaster@sandbox9aa0ee66c63b4bfd899a5ac9dc507d7b.mailgun.org>",
+      // 	to: updatedUser.email,
+      // 	subject: "Congratulations on winning offer",
+      // 	text:'Thankyou for participating healthyTouch, your coupon code:'+ randomItem.offerName
+      // };
+      // mg.messages().send(data, function (error, body) {
+      // 	console.log(body);
+      //   console.log(error)
+      // });
 
 
 
@@ -219,4 +246,50 @@ const getAllUser = AsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createUser, updateUser, getUserLoginStatus, getUserOffer,getAllUser };
+
+// const sendmail = AsyncHandler(async (req, res) => {
+//   mg.messages.create('sandbox-123.mailgun.org', {
+//     from: "noreply.healthytouch@gmail.com",
+//     to: "riyaskh123@gmail.com",
+//     subject: "Hello",
+//     text: "Testing some Mailgun awesomeness!",
+//     html: "<h1>Testing some Mailgun awesomeness!</h1>"
+//   })
+//   .then(msg => {
+//     console.log(msg)
+//   res.status(200).json({
+//     msg:'mail send successfull'
+//   })
+//   }) // logs response data
+//   .catch(err => {
+//     console.log(err);
+//     res.status(404).json({
+//       msg:'error im sending mail'
+//     })
+//   }) // logs any error
+// });
+
+const sendmail = AsyncHandler(async (req, res) => {
+  const mailOptions = {
+    from: "noreply.healthytouch@gmail.com",
+    to: "riyaskh123@gmail.com",
+    subject: "Hello riyas",
+    text: "This is a test email .",
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email: ", error);
+      res.status(404).json({
+        msg: 'error im sending mail'
+      })
+    } else {
+      console.log("Email sent: ", info.response);
+      res.status(200).json({
+        msg: 'mail send successfull'
+      })
+    }
+  });
+});
+
+module.exports = { createUser, updateUser, getUserLoginStatus, getUserOffer, getAllUser, sendmail };
