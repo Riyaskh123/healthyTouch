@@ -23,7 +23,7 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-//ad section
+
 router.route("/ads").post(createAds).get(getAllAds).patch(updateAd)
 router.delete("/ads/:adId", deleteAd);
 router.route("/admin").post(createAdmin)

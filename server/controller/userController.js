@@ -159,20 +159,25 @@ const updateUser = AsyncHandler(async (req, res) => {
       console.log(randomItem.offerName)
       // Email options
 
-      const mailOptions = {
-      	from: "noreply.healthytouch@gmail.com",
-      	to: updatedUser.email,
-      	subject: "Congratulations on winning offer",
-      	text:'Thankyou for participating healthyTouch, your coupon code:'+ randomItem.offerName
-      };
+      let data={
+        mailId: updatedUser.email,
+        offerName: randomItem.offerName
+      }
+        funSendmail(data)
+      // const mailOptions = {
+      // 	from: "noreply.healthytouch@gmail.com",
+      // 	to: updatedUser.email,
+      // 	subject: "Congratulations on winning offer",
+      // 	text:'Thankyou for participating healthyTouch, your coupon code:'+ randomItem.offerName
+      // };
     
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error("Error sending email: ", error);
-        } else {
-          console.log("Email sent: ", info.response);
-        }
-      });
+      // transporter.sendMail(mailOptions, (error, info) => {
+      //   if (error) {
+      //     console.error("Error sending email: ", error);
+      //   } else {
+      //     console.log("Email sent: ", info.response);
+      //   }
+      // });
 
       // mg.messages.create('sandbox-123.mailgun.org', {
       //   from: "Excited User <mailgun@sandbox-123.mailgun.org>",
@@ -247,33 +252,40 @@ const getAllUser = AsyncHandler(async (req, res) => {
 });
 
 
-// const sendmail = AsyncHandler(async (req, res) => {
-//   mg.messages.create('sandbox-123.mailgun.org', {
-//     from: "noreply.healthytouch@gmail.com",
-//     to: "riyaskh123@gmail.com",
-//     subject: "Hello",
-//     text: "Testing some Mailgun awesomeness!",
-//     html: "<h1>Testing some Mailgun awesomeness!</h1>"
-//   })
-//   .then(msg => {
-//     console.log(msg)
-//   res.status(200).json({
-//     msg:'mail send successfull'
-//   })
-//   }) // logs response data
-//   .catch(err => {
-//     console.log(err);
-//     res.status(404).json({
-//       msg:'error im sending mail'
-//     })
-//   }) // logs any error
-// });
-
-const sendmail = AsyncHandler(async (req, res) => {
+const funSendmail = (data) => {
   const mailOptions = {
     from: "noreply.healthytouch@gmail.com",
-    to: "riyaskh123@gmail.com",
-    subject: "Hello riyas",
+    to: data.mailId,
+    subject: "Congratulations on winning offer",
+    text:'Thankyou for participating healthyTouch, your coupon code:'+ data.offerName
+  };
+
+  console.log(data)
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email: ", error);
+      res.status(404).json({
+        msg: 'error im sending mail'
+      })
+    } else {
+      console.log("Email sent: ", info.response);
+      res.status(200).json({
+        msg: 'Confirmed mail send successfull'
+      })
+    }
+  });
+};
+
+const sendmail = AsyncHandler(async (req, res) => {
+let data={
+  mailId: "yyaseen080@gmail.com",
+  offerName: "dummy offer"
+}
+  funSendmail(data)
+  const mailOptions = {
+    from: "noreply.healthytouch@gmail.com",
+    to: "yyaseen080@gmail.com",
+    subject: "Hello yaseen",
     text: "This is a test email .",
   };
 
